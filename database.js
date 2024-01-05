@@ -31,7 +31,7 @@ const books = [
     }
 ]
 
-const author = [
+const authors = [
     {
         ID: 1,
         name: "Sachin Arora",
@@ -49,7 +49,7 @@ const author = [
     },
 ]
 
-const publication = [
+const publications = [
     {
         ID: 1,
         name: "Historical",
@@ -69,4 +69,4 @@ const publication = [
 
 ]
 
-module.exports = {books, author, publication}; //for security reasons we need to export that file to import it in other 
+module.exports = {books, authors, publications}; //for security reasons we need to export that file to import it in other 
