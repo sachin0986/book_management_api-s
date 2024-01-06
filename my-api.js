@@ -34,6 +34,43 @@ shelf.get("/book/:isbn", (request, response) => {
 });
 // ------------------------------------------------------------------------------------------------------------>
 /*
+Route: "/books/category"
+Description: API call to get specific book in database
+Access: Public
+Parameters: isbn
+Methods: GET
+*/
+
+shelf.get("/book/catg/:category", (request, response) => {
+    const getBookbyCategory = database.books.filter((book) => book.category.includes(request.params.category)); /*includes() search in the array that 
+                                                                                                                any matching parameter present in that array or not */
+    if(getBookbyCategory.length === 0)
+    {
+        return response.json({error: `No book found for ${request.params.category} type of category`})
+    }
+    return response.json({Books: getBookbyCategory});
+});
+
+// ------------------------------------------------------------------------------------------------------------>
+/*
+Route: "/publications"
+Description: API call to get all publications in database
+Access: Public
+Parameters: NO
+Methods: GET
+*/
+
+shelf.get("/book/lang/:language", (request, response) => {
+    const getBookbyLanguage = database.books.filter((book) => book.language.includes(request.params.language));
+    if(getBookbyLanguage.length === 0)
+    {
+        return response.json({error: `No book found for ${reqiest.params.language}`});
+    }
+    return response.json({Book: getBookbyLanguage});
+});
+
+// ------------------------------------------------------------------------------------------------------------>
+/*
 Route: "/publications"
 Description: API call to get all publications in database
 Access: Public

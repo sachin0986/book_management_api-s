@@ -7,7 +7,7 @@ const books = [
         numPages: "289",
         author: [1, 2],
         publications: [1],
-        category: ["Hestory", "Time"]
+        category: ["History", "Time"]
     },
     {
         ISBN: "104Book",
