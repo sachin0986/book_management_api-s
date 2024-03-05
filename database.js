@@ -34,7 +34,7 @@ const books = [
 const authors = [
     {
         ID: 1,
-        name: "Sachin Arora",
+        name: "Sachin",
         books: ["102Book", "104Book" ]
     },
     {

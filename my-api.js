@@ -58,6 +58,23 @@ shelf.get("/book/catg/:category", (request, response) => {
 
 // ------------------------------------------------------------------------------------------------------------>
 /*
+Route: "/books/language"
+Description: API call to get specific book by their language from database
+Access: Public
+Parameters: isbn
+Methods: GET
+*/
+shelf.get("book/lang/:language", (request,response) => {
+    const getBookByLanguage = database.books.filter((book) => book.language.includes(request.params.language));
+    if(getBookByLanguage.length === 0)
+    {
+        return response.json({error: `No books found for ${request.params.language} type of Language`})
+    }
+    return response.json({Books : getBookByLanguage});
+});
+
+// ------------------------------------------------------------------------------------------------------------>
+/*
 Route: "/publications"
 Description: API call to get all publications in database
 Access: Public
@@ -86,6 +103,25 @@ Methods: GET
 shelf.get("/publications", (request, response) => {
     return response.json({Publication: database.publications})
 }); 
+
+// ------------------------------------------------------------------------------------------------------------>
+/*
+Route: "/books/:isbn"
+Description: API call to get specific publication in database
+Access: Public
+Parameters: isbn
+Methods: GET
+*/
+
+shelf.get("/publication/:name", (request,response) => {
+    const getPublicationByName = database.publications.filter((publication) => publication.name.includes(request.params.name));
+    if(getPublicationByName.length === 0)
+    {
+        return response.json({error : `No Publication found of this ${request.params.name} nane `});
+    }
+    return response.json({Publication : getPublicationByName});
+});
+
 // ------------------------------------------------------------------------------------------------------------>
 /*
 Route: "/books/:isbn"
@@ -151,6 +187,25 @@ shelf.get("/auth/:id", (request, response) => {
     return response.json({Author: getAuthorbyID});
 });
 
+
+// ------------------------------------------------------------------------------------------------------------>
+/*
+Route: "/authors"
+Description: API call to get all authors in database
+Access: Public
+Parameters: 
+Methods: GET
+*/
+shelf.get("/author/:name", (request,response) => {
+    const getAuthorByName = database.authors.filter((author) => author.name.includes(request.params.name));
+    if(getAuthorByName.length === 0)
+    {
+        return response.json({error : `No author found of this ${request.params.name}`});
+    }
+    return response.json({Author : getAuthorByName});
+
+});
+
 // ------------------------------------------------------------------------------------------------------------>
 /*
 Route: "/authors"
@@ -196,9 +251,72 @@ Methods: POST
 */
 shelf.post("/publication/new", (request, response) => {
     const newPublication = request.body;
-    database.books.push(newPublication);
+    database.publications.push(newPublication);
     return response.json({UpdatedPublications: database.publications});
 });    
+
+//POST --------------------------------------------------------------------------------------------------------------
+/*
+Route: "/authors"
+Description: API call to get specific authors in database
+Access: Public
+Parameters: ID
+Methods: POST
+*/
+shelf.post("/author/new", (request,response) => {
+    const newAuthor = request.body;
+    database.authors.push(newAuthor);
+    return response.json({UpdatedAuthor : database.authors});
+});
+
+//PUT --------------------------------------------------------------------------------------------------------------
+/*
+Route: "/authors"
+Description: API call to get specific authors in database
+Access: Public
+Parameters: ID
+Methods: PUT
+*/
+
+//update book details if author is chnaged.
+shelf.put("/publication/update/book/:isbn", (request,response) => {
+database.publications.forEach((pub) => {            //forEach is used because we don't want to return any thing
+    if(pub.ID === request.body.pubId)
+    {
+        return pub.books.push(request.params.isbn);
+    }
+})
+
+//now books database
+database.books.forEach((book) => {
+if(book.ISBN === request.params.isbn)
+{ 
+     book.publications = request.body.pubId;
+     return;
+}
+return response.json({
+    books : database.books,
+    publications : database.publications,
+    message : "Sucessfully updated Publications"
+});
+});
+});
+
+
+
+//also add update using post request
+
+//DELETE --------------------------------------------------------------------------------------------------------------
+/*
+Route: "/authors"
+Description: API call to get specific authors in database
+Access: Public
+Parameters: ID
+Methods: POST
+*/
+shelf.post("", (request,response) => {
+    
+});
 
 shelf.listen(3000, () => {
     console.log("Server is up and running");
